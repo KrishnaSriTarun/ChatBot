@@ -76,17 +76,24 @@ def process_command(command):
             return f"Opening Google search for '{topic}'..."
         else:
             return "Please specify what you want to search on Google."
-    elif "open" in command and "lead code" in command:
-        site = command.split('open ')[1].strip().replace(" ", "")
-        webbrowser.open(f"https://www.leetcode.com")
-        return f"Opening {site}.com"
+    
+    elif "open youtube and search" in command:
+        # Remove "open youtube and search" and clean up the query for search
+        search_query = command.replace("open youtube and search", "").strip()
+        if search_query:
+            url = f"https://www.youtube.com/results?search_query={search_query.replace(' ', '+')}"
+            webbrowser.open(url)
+            return f"Opening YouTube and searching for '{search_query}'..."
+        else:
+            return "Please specify a topic or song to search on YouTube."
+
     elif "wikipedia" in command:
         topic = command.replace("wikipedia", "").strip()
         if topic:
             return get_wikipedia_summary(topic)
         else:
             return "Please specify a topic to search on Wikipedia."
-
+    
     elif "time" in command:
         return f"The time is {datetime.datetime.now().strftime('%H:%M')}."
     elif "date" in command:
@@ -95,17 +102,9 @@ def process_command(command):
         webbrowser.open("https://krishnasritarun.netlify.app/")
         return "Opening Portfolio."
     elif "open" in command:
-        site = command.split('open ')[1].strip()
-        webbrowser.open(f"{site}.com")
-        return f"Opening {site}"
-    elif "open" in command:
-        parts = command.split('open ')
-        if len(parts) > 1:
-            site = parts[1].strip()
-            if site:
-                webbrowser.open(f"{site}.com")
-                return f"Opening {site}"
-        return "Please specify a website to open."
+        site = command.split('open ')[1].strip().replace(" ", "")
+        webbrowser.open(f"https://{site}.com")
+        return f"Opening {site}.com"
     elif "play music" in command:
         music_dir = 'C:\\Users\\krish\\Music'   # Adjust to your path
         songs = os.listdir(music_dir)
@@ -138,7 +137,8 @@ def listen_for_scout():
     while True:
         query = takecommand().lower()
         if "scout" in query:
-            return query  # Return the command after hearing "Scout"
+            # Remove "scout" from the command and return the cleaned-up query
+            return query.replace("scout", "").strip()
 
 # Main function to handle text or voice commands
 def chatbot():
